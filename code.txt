@@ -1,0 +1,41 @@
+.entry _Z9set_arrayPff (
+		.param .u32 __cudaparm__Z9set_arrayPff_vals,
+		.param .f32 __cudaparm__Z9set_arrayPff_param)
+	{
+	.reg .u16 %rh<4>;
+	.reg .u32 %r<8>;
+	.reg .f32 %f<4>;
+	.reg .pred %p<3>;
+ //   9  __global__ void set_array(float *vals,float param) {
+$LBB1__Z9set_arrayPff:
+	ld.param.f32 	%f1, [__cudaparm__Z9set_arrayPff_param];
+	mov.f32 	%f2, 0f40400000;     	// 3
+	setp.lt.f32 	%p1, %f1, %f2;
+  @!%p1 bra 	$Lt_0_1026;
+ //  10  	int i=threadIdx.x+blockDim.x*blockIdx.x;
+ //  11  	if (param<3.0f) vals[i]=param;
+	ld.param.u32 	%r1, [__cudaparm__Z9set_arrayPff_vals];
+	cvt.u32.u16 	%r2, %tid.x;
+	mov.u16 	%rh1, %ctaid.x;
+	mov.u16 	%rh2, %ntid.x;
+	mul.wide.u16 	%r3, %rh1, %rh2;
+	add.u32 	%r4, %r2, %r3;
+	mul.lo.u32 	%r5, %r4, 4;
+	add.u32 	%r6, %r1, %r5;
+	ld.param.f32 	%f1, [__cudaparm__Z9set_arrayPff_param];
+	st.global.f32 	[%r6+0], %f1;
+$Lt_0_1026:
+
+      L1:
+      ...
+      L2:
+      ...
+      L3:
+      ...
+      ts: .branchtargets L1, L2, L3;
+      @p brx.idx %r0, ts;
+
+
+	exit;
+$LDWend__Z9set_arrayPff:
+	} // _Z9set_arrayPf
